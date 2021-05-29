@@ -3,37 +3,51 @@
 #[macro_use]
 extern crate rocket;
 extern crate dotenv;
+#[macro_use]
+extern crate rocket_contrib;
 
 mod clocker;
-// #[macro_use]
-// extern crate serde_derive;
-// #[macro_use]
-// extern crate serde_json;
-
-// use rocket_contrib::json::Json;
-// use serde_json::Value;
+use rocket_contrib::json::{Json, JsonValue};
 
 use clocker::{do_clock_event, get_clock_status};
 use dotenv::dotenv;
 
 #[get("/status")]
-fn status() -> &'static str {
+fn status() -> Json<JsonValue> {
     let call_status = get_clock_status();
     let call_status = match call_status {
-        Ok(is) => return if is { "in" } else { "out" },
+        Ok(is) => {
+            if is {
+                "in"
+            } else {
+                "out"
+            }
+        }
         Err(_) => "err",
     };
-    call_status
+
+    Json(json!({
+        "status": call_status,
+    }))
 }
 
 #[get("/clock")]
-fn clocker() -> &'static str {
+fn clocker() -> Json<JsonValue> {
     let call_status = do_clock_event();
     let call_status = match call_status {
-        Ok(is) => return if is { "in" } else { "out" },
+        Ok(is) => {
+            if is {
+                "in"
+            } else {
+                "out"
+            }
+        }
         Err(_) => "err",
     };
-    call_status
+
+    Json(json!({
+        "status": call_status,
+    }))
 }
 
 fn main() {
