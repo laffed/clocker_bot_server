@@ -1,6 +1,6 @@
 // use dotenv;
 use failure::Fallible;
-pub use headless_chrome::{protocol::page::ScreenshotFormat, Browser, LaunchOptions, Tab};
+pub use headless_chrome::{protocol::page::ScreenshotFormat, Browser, Tab};
 use std::sync::Arc;
 
 // let usrname: &str = dotenv::var("CNC_USR").unwrap().as_str();
@@ -9,10 +9,7 @@ const USRNAME: &'static str = "johnkangsumrith";
 const PW: &'static str = "";
 
 pub fn get_clock_status() -> Fallible<bool> {
-    let browser: Browser = Browser::new(LaunchOptions {
-        headless: false,
-        ..Default::default()
-    })?;
+    let browser: Browser = Browser::default()?;
     let tab: Arc<Tab> = browser.wait_for_initial_tab()?;
     tab.navigate_to("https://www.cnc-claimsource.com/")?;
     tab.wait_until_navigated()?;
@@ -39,10 +36,7 @@ pub fn get_clock_status() -> Fallible<bool> {
 }
 
 pub fn do_clock_event() -> Fallible<bool> {
-    let browser: Browser = Browser::new(LaunchOptions {
-        headless: false,
-        ..Default::default()
-    })?;
+    let browser: Browser = Browser::default()?;
     let tab: Arc<Tab> = browser.wait_for_initial_tab()?;
     tab.navigate_to("https://www.cnc-claimsource.com/")?;
     tab.wait_until_navigated()?;
