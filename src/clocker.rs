@@ -1,12 +1,6 @@
-// use dotenv;
 use failure::Fallible;
 pub use headless_chrome::{protocol::page::ScreenshotFormat, Browser, Tab};
-use std::sync::Arc;
-
-// let usrname: &str = dotenv::var("CNC_USR").unwrap().as_str();
-// let pw: &str = dotenv::var("CNC_PW").unwrap().as_str();
-const USRNAME: &'static str = "johnkangsumrith";
-const PW: &'static str = "";
+use std::{env, sync::Arc};
 
 pub fn get_clock_status() -> Fallible<bool> {
     let browser: Browser = Browser::default()?;
@@ -16,9 +10,9 @@ pub fn get_clock_status() -> Fallible<bool> {
 
     //Login
     tab.wait_for_element("input#username")?.click()?;
-    tab.type_str(USRNAME)?;
+    tab.type_str(env::var("CNC_USR").unwrap().as_str())?;
     tab.wait_for_element("input#password")?.click()?;
-    tab.type_str(PW)?;
+    tab.type_str(env::var("CNC_PW").unwrap().as_str())?;
     tab.wait_for_element("input#loginBtn")?.click()?;
     tab.wait_for_element("div#clockbox")?;
 
@@ -43,9 +37,9 @@ pub fn do_clock_event() -> Fallible<bool> {
 
     //Login
     tab.wait_for_element("input#username")?.click()?;
-    tab.type_str(USRNAME)?;
+    tab.type_str(env::var("CNC_USR").unwrap().as_str())?;
     tab.wait_for_element("input#password")?.click()?;
-    tab.type_str(PW)?;
+    tab.type_str(env::var("CNC_PW").unwrap().as_str())?;
     tab.wait_for_element("input#loginBtn")?.click()?;
     tab.wait_for_element("div#clockbox")?;
 

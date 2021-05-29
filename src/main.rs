@@ -2,6 +2,9 @@
 
 #[macro_use]
 extern crate rocket;
+extern crate dotenv;
+
+mod clocker;
 // #[macro_use]
 // extern crate serde_derive;
 // #[macro_use]
@@ -10,9 +13,8 @@ extern crate rocket;
 // use rocket_contrib::json::Json;
 // use serde_json::Value;
 
-mod clocker;
-
 use clocker::{do_clock_event, get_clock_status};
+use dotenv::dotenv;
 
 #[get("/status")]
 fn status() -> &'static str {
@@ -35,6 +37,7 @@ fn clocker() -> &'static str {
 }
 
 fn main() {
+    dotenv().ok();
     rocket::ignite()
         .mount("/", routes![status, clocker])
         .launch();
