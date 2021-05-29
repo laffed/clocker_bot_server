@@ -12,7 +12,7 @@ use rocket_contrib::json::{Json, JsonValue};
 use clocker::{do_clock_event, get_clock_status};
 use dotenv::dotenv;
 
-#[get("/status")]
+#[get("/status", format = "application/json")]
 fn status() -> Json<JsonValue> {
     let call_status = get_clock_status();
     let call_status = match call_status {
@@ -31,7 +31,7 @@ fn status() -> Json<JsonValue> {
     }))
 }
 
-#[get("/clock")]
+#[get("/clock", format = "application/json")]
 fn clocker() -> Json<JsonValue> {
     let call_status = do_clock_event();
     let call_status = match call_status {
