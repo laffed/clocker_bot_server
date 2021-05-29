@@ -2,20 +2,30 @@
 
 #[macro_use]
 extern crate rocket;
-#[macro_use]
-extern crate serde_derive;
-#[macro_use]
-extern crate serde_json;
+// #[macro_use]
+// extern crate serde_derive;
+// #[macro_use]
+// extern crate serde_json;
 
-use rocket_contrib::json::Json;
-use serde_json::Value;
+// use rocket_contrib::json::Json;
+// use serde_json::Value;
+
+mod clocker;
+
+use clocker::test;
 
 #[get("/status")]
-fn status() -> &'static str {
-    "clock status"
+fn status() -> String {
+    let first_test = test();
+    let first_test = match first_test {
+        Ok(_) => String::from("Everything went swimmingly!"),
+        Err(error) => format!("Oh boy: {}", error),
+    };
+    print!("{}", first_test);
+    first_test
 }
 
-#[get("/status")]
+#[get("/clock")]
 fn clocker() -> &'static str {
     "clocking"
 }
