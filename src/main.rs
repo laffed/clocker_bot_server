@@ -12,22 +12,26 @@ extern crate rocket;
 
 mod clocker;
 
-use clocker::test;
+use clocker::{do_clock_event, get_clock_status};
 
 #[get("/status")]
-fn status() -> String {
-    let first_test = test();
-    let first_test = match first_test {
-        Ok(_) => String::from("Everything went swimmingly!"),
-        Err(error) => format!("Oh boy: {}", error),
+fn status() -> &'static str {
+    let call_status = get_clock_status();
+    let call_status = match call_status {
+        Ok(is) => return if is { "in" } else { "out" },
+        Err(_) => "err",
     };
-    print!("{}", first_test);
-    first_test
+    call_status
 }
 
 #[get("/clock")]
 fn clocker() -> &'static str {
-    "clocking"
+    let call_status = do_clock_event();
+    let call_status = match call_status {
+        Ok(is) => return if is { "in" } else { "out" },
+        Err(_) => "err",
+    };
+    call_status
 }
 
 fn main() {
